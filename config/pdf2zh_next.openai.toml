@@ -1,0 +1,81 @@
+# Primary GUI-only configuration for high-fidelity mathematical-paper translation.
+# Recommended path:
+# 1. Use pdf2zh_next GUI.
+# 2. Use OpenAI as the translator.
+# 3. Validate on the first page.
+# 4. Keep the final production path on this configuration unless you later compare with Ollama.
+
+report_interval = 0.1
+openai = true
+
+[basic]
+gui = true
+debug = false
+warmup = false
+version = false
+
+[gui_settings]
+enabled_services = "OpenAI"
+disable_gui_sensitive_input = false
+disable_config_auto_save = true
+server_port = 7860
+ui_lang = "ja"
+
+[translation]
+lang_in = "en"
+lang_out = "ja"
+output = "/app/pdf2zh_files"
+qps = 4
+ignore_cache = false
+min_text_length = 5
+save_auto_extracted_glossary = true
+no_auto_extract_glossary = false
+pool_max_workers = 4
+term_qps = 2
+term_pool_max_workers = 2
+
+[pdf]
+no_dual = false
+no_mono = false
+formular_font_pattern = '(CM[^R]|MS.M|XY|MT|BL|RM|EU|LA|RS|LINE|LCIRCLE|TeX-|rsfs|txsy|wasy|stmary|.*Mono|.*Code|.*Ital|.*Sym|.*Math)'
+formular_char_pattern = '(\(|\||\)|\+|=|\d|[\u0080-\ufaff])'
+split_short_lines = false
+short_line_split_factor = 0.8
+skip_clean = false
+dual_translate_first = false
+disable_rich_text_translate = false
+enhance_compatibility = false
+use_alternating_pages_dual = false
+watermark_output_mode = "watermarked"
+translate_table_text = true
+skip_scanned_detection = false
+ocr_workaround = false
+auto_enable_ocr_workaround = false
+only_include_translated_page = false
+no_merge_alternating_line_numbers = false
+no_remove_non_formula_lines = false
+non_formula_line_iou_threshold = 0.9
+figure_table_protection_threshold = 0.9
+skip_formula_offset_calculation = false
+
+[openai_detail]
+# The API key is intentionally NOT stored in this tracked file.
+# Provide the real value through `.env` as:
+#   PDF2ZH_OPENAI_API_KEY=...
+#
+# These values can also be overridden through `.env`:
+#   PDF2ZH_OPENAI_BASE_URL
+#   PDF2ZH_OPENAI_MODEL
+#   PDF2ZH_OPENAI_TIMEOUT
+#   PDF2ZH_OPENAI_TEMPERATURE
+#   PDF2ZH_OPENAI_ENABLE_JSON_MODE
+#   PDF2ZH_OPENAI_SEND_TEMPRATURE
+#
+# Keep the base URL ending with /v1.
+# Replace the model after the first-page sanity check if you trust a stronger model more.
+openai_model = "gpt-4.1-mini"
+openai_base_url = "https://api.openai.com/v1"
+openai_timeout = "500"
+openai_temperature = "0.0"
+openai_enable_json_mode = true
+openai_send_temprature = true

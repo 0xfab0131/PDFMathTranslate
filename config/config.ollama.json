@@ -1,4 +1,8 @@
 {
+  "_CURRENT_SCOPE_NOTE": [
+    "This JSON file targets the stable 1.x GUI path for later Ollama comparison.",
+    "For the recommended GUI-only 2.x path, use config/pdf2zh_next.ollama.toml with pdf2zh_next GUI instead."
+  ],
   "_REQUIRED_USER_INPUT_BEFORE_USE": [
     "Replace translators[0].envs.OLLAMA_HOST to match your actual Docker topology before first use.",
     "Replace translators[0].envs.OLLAMA_MODEL with a model that is already installed in your local Ollama.",

@@ -1,0 +1,64 @@
+# Secondary GUI-only configuration for later comparison with a local Ollama model.
+# Do not start from this path for quality-critical mathematical papers.
+# First stabilize the OpenAI configuration, then compare this configuration on the same first page.
+
+report_interval = 0.1
+ollama = true
+
+[basic]
+gui = true
+debug = false
+warmup = false
+version = false
+
+[gui_settings]
+enabled_services = "Ollama"
+disable_gui_sensitive_input = false
+disable_config_auto_save = true
+server_port = 7860
+ui_lang = "ja"
+
+[translation]
+lang_in = "en"
+lang_out = "ja"
+output = "/app/pdf2zh_files"
+qps = 1
+ignore_cache = false
+min_text_length = 5
+save_auto_extracted_glossary = true
+no_auto_extract_glossary = false
+pool_max_workers = 1
+term_qps = 1
+term_pool_max_workers = 1
+
+[pdf]
+no_dual = false
+no_mono = false
+formular_font_pattern = '(CM[^R]|MS.M|XY|MT|BL|RM|EU|LA|RS|LINE|LCIRCLE|TeX-|rsfs|txsy|wasy|stmary|.*Mono|.*Code|.*Ital|.*Sym|.*Math)'
+formular_char_pattern = '(\(|\||\)|\+|=|\d|[\u0080-\ufaff])'
+split_short_lines = false
+short_line_split_factor = 0.8
+skip_clean = false
+dual_translate_first = false
+disable_rich_text_translate = false
+enhance_compatibility = false
+use_alternating_pages_dual = false
+watermark_output_mode = "watermarked"
+translate_table_text = true
+skip_scanned_detection = false
+ocr_workaround = false
+auto_enable_ocr_workaround = false
+only_include_translated_page = false
+no_merge_alternating_line_numbers = false
+no_remove_non_formula_lines = false
+non_formula_line_iou_threshold = 0.9
+figure_table_protection_threshold = 0.9
+skip_formula_offset_calculation = false
+
+[ollama_detail]
+# Replace host and model before use.
+# For Docker Desktop on the same machine, host.docker.internal is the normal starting point.
+# For Linux, add host-gateway mapping or use an Ollama service name on the same Docker network.
+ollama_model = "gemma2"
+ollama_host = "http://host.docker.internal:11434"
+num_predict = 2000

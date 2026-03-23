@@ -1,4 +1,8 @@
 {
+  "_CURRENT_SCOPE_NOTE": [
+    "This JSON file targets the stable 1.x GUI path.",
+    "For the recommended GUI-only high-precision path, use config/pdf2zh_next.openai.toml with pdf2zh_next GUI instead."
+  ],
   "_REQUIRED_USER_INPUT_BEFORE_USE": [
     "Replace translators[0].envs.OPENAI_API_KEY before first use.",
     "If you use the official OpenAI API, keep OPENAI_BASE_URL as https://api.openai.com/v1.",
@@ -9,7 +13,7 @@
   "_OPENAI_REQUIRED_FIELDS_SAMPLE": {
     "OPENAI_BASE_URL": "https://api.openai.com/v1",
     "OPENAI_API_KEY": "sk-your-openai-api-key-here",
-    "OPENAI_MODEL": "gpt-4o-mini"
+    "OPENAI_MODEL": "gpt-4.1-mini"
   },
   "_OPTIONAL_OPENAI_TUNING_SAMPLE": {
     "OPENAI_STREAM": "true",
@@ -17,7 +21,7 @@
     "OPENAI_MAX_TOKENS": -1
   },
   "_QUALITY_FIRST_MODEL_NOTE": [
-    "gpt-4o-mini is kept here as the broad-compatibility starting point because it is the documented default.",
+    "gpt-4.1-mini is kept here as the broad-compatibility starting point because it is the documented default.",
     "For final mathematical-paper runs, if your environment supports a stronger OpenAI-compatible model that you trust more, replace OPENAI_MODEL after the one-page smoke test."
   ],
   "_GUI_FIELDS_NOT_CONTROLLED_BY_THIS_FILE": [
@@ -49,7 +53,7 @@
       "envs": {
         "OPENAI_BASE_URL": "https://api.openai.com/v1",
         "OPENAI_API_KEY": "sk-your-openai-api-key-here",
-        "OPENAI_MODEL": "gpt-4o-mini",
+        "OPENAI_MODEL": "gpt-4.1-mini",
         "OPENAI_STREAM": "true",
         "OPENAI_STOP_TOKENS": "",
         "OPENAI_MAX_TOKENS": -1

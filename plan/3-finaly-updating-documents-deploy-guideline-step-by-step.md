@@ -21,6 +21,31 @@
 今回の中心は**実装改修ではありません**。  
 中心は、**正しい利用方法と構成を先に押さえること**です。
 
+> [!IMPORTANT]
+> 途中まで stable 1.x GUI を前提に整理してきましたが、現在の要件
+> 「GUI-only」「高精度」「数学論文」「露出していない advanced knobs も使いたい」
+> を踏まえると、**実運用の第一推奨は `pdf2zh_next GUI`** です。
+>
+> そのため、今 repo 内で実際に使う構成としては次を主系統にしてください。
+>
+> - `docker-compose.yml`
+> - `config/pdf2zh_next.openai.toml`
+>
+> そして後で `Ollama` を評価する場合は、
+>
+> - `docker-compose.ollama.yml`
+> - `config/pdf2zh_next.ollama.toml`
+>
+> を使うのが現在の推奨です。
+>
+> さらに、GitHub へ push されることを前提にした secrets 運用としては、
+>
+> - tracked: `config/pdf2zh_next.openai.toml`
+> - tracked: `.env.example`
+> - untracked: `.env`
+>
+> という分離を使うのが現在の推奨です。
+
 ---
 
 ## 0. まず結論
@@ -334,6 +359,46 @@ project-root/
 
 まずは `config/config.json` を編集して使うのが最短です。
 
+ただし、現在の本命ルートである `pdf2zh_next GUI` では、さらに一段 secure な流れを取ります。
+
+#### 推奨する secure な secrets 分離
+
+- tracked:
+  - `config/pdf2zh_next.openai.toml`
+  - `.env.example`
+- untracked:
+  - `.env`
+
+意味は次の通りです。
+
+- `config/pdf2zh_next.openai.toml`
+  - 共有してよい既定値、品質ノブ、GUI の構成を持つ
+- `.env.example`
+  - ユーザーがどの変数を埋めるべきかを示す公開テンプレート
+- `.env`
+  - 実際の API key や、必要に応じた endpoint / model override を置くローカル専用ファイル
+
+この repo の `.gitignore` では `.env` は ignore されています。  
+そのため、GitHub へ push する前提では、**秘密は `.env` 側へ寄せ、tracked な `TOML` に入れない**のが本質的です。
+
+#### 実際の値の流れ
+
+今回用意した流れでは、値は次の順で使われます。
+
+1. `.env.example` を元に `.env` を作る
+2. `docker-compose.yml` が `env_file: ./.env` でコンテナへ注入する
+3. `pdf2zh_next` が `PDF2ZH_OPENAI_API_KEY` などの env を読む
+4. env は tracked `TOML` より優先される
+5. GUI はその設定済み状態を使って起動する
+
+したがって、「実際に作成された設定ファイルから値を取得して、構成に使う流れ」は、
+
+- `.env.example` -> `.env`
+- `.env` -> `docker compose`
+- `docker compose` -> `pdf2zh_next`
+
+という形で既に成立しています。
+
 ```json
 {
   "PDF2ZH_LANG_FROM": "English",
@@ -606,7 +671,7 @@ API 系 translator の設定は**基本的に `config.json` へ書く**のが最
       "envs": {
         "OPENAI_BASE_URL": "https://api.openai.com/v1",
         "OPENAI_API_KEY": "your-api-key",
-        "OPENAI_MODEL": "gpt-4o-mini"
+        "OPENAI_MODEL": "gpt-4.1-mini"
       }
     }
   ],
@@ -1184,9 +1249,10 @@ stable root docs 自体が、
 
 最初の本命は次です。
 
-- 設定ファイル: `config/config.precise.json`
+- コンテナ構成: `docker-compose.yml`
+- 設定ファイル: `config/pdf2zh_next.openai.toml`
 - translator: `OpenAI`
-- pipeline: `precise`
+- pipeline: `pdf2zh_next GUI` 自体が `BabelDOC` ベース
 - target: `Japanese`
 
 ただし、いきなり全文を流さず、まず first page で検証します。
@@ -1197,17 +1263,27 @@ stable root docs 自体が、
 
 1. `Service`
    - `OpenAI` を選ぶ
-2. `Translate from`
+2. `Translate from` / source language
    - `English`
-3. `Translate to`
+3. `Translate to` / target language
    - `Japanese`
 4. `Pages`
    - 最初は `First`
-5. `Open for More Experimental Options!`
-   - `number of threads`: 最初は `1`
-   - `Ignore cache`: mode や regex を変えた検証時は on
-   - `Custom formula font regex (vfont)`: `config` に入れた強めの regex が出ているか確認
-   - `Translation Mode`: `precise`
+5. `QPS` / `Pool Max Workers`
+   - 最初は低く保守的に
+6. `Auto Term Extraction`
+   - 最初は on
+   - `save automatically extracted glossary` も on
+7. `formula font pattern` と `formula char pattern`
+   - `config/pdf2zh_next.openai.toml` の値が反映されているか確認
+8. compatibility / layout 系
+   - 最初は `skip_clean = false`
+   - 最初は `disable_rich_text_translate = false`
+   - 最初は `enhance_compatibility = false`
+9. OCR / scanned document 系
+   - デジタル born PDF 論文なら最初は off のまま
+10. `Ignore cache`
+   - 設定や regex を変えた比較検証時は on
 
 ### 20.3 first-page 精査の目的
 
@@ -1228,22 +1304,23 @@ stable root docs 自体が、
 
 見るべき順:
 
-1. `Translation Mode` が本当に `precise` か
-2. `Custom formula font regex (vfont)` が意図した値か
+1. `formula font pattern` が意図した値か
+2. `formula char pattern` が意図した値か
 3. `Ignore cache` を on にして再試行したか
 4. 問題ページが特殊フォントや特殊記号を多用していないか
 
-この系統では、まず `vfont` と cache を疑うのが本質的です。
+この系統では、まず `formular_font_pattern` / `formular_char_pattern` と cache を疑うのが本質的です。
 
 #### ケース B: レイアウトや段組が崩れる
 
 見るべき順:
 
 1. まず same page / first page で再現するか
-2. `precise` で起きるか、`fast` でも起きるか
-3. 問題が図表・脚注・式周辺に集中しているか
+2. 問題が図表・脚注・式周辺に集中しているか
+3. `enhance_compatibility` を second try として使うべきか
+4. `skip_clean` / `disable_rich_text_translate` を個別に動かすべきか
 
-ここでは translator より pipeline 側の問題であることが多いです。
+ここでは translator より `BabelDOC` 側の PDF 処理・再構成パイプラインの問題であることが多いです。
 
 #### ケース C: 出力が前回と変わらない
 
@@ -1256,13 +1333,15 @@ stable root docs 自体が、
 
 #### ケース D: `precise` でだけ壊れる
 
-この場合の判断は単純です。
+このケースは `pdf2zh_next GUI` では、より具体的には
 
-- `OpenAI` 自体の translator 設定は維持
-- `precise` 側を保留
-- `fast` 側を比較対象として残す
+- compatibility bundle
+- `skip_clean`
+- `disable_rich_text_translate`
+- `dual_translate_first`
+- `use_alternating_pages_dual`
 
-です。
+のどれで改善するかを切り分ける段階です。
 
 ### 20.5 全文へ上げる条件
 
@@ -1272,33 +1351,46 @@ stable root docs 自体が、
 2. 記号列が壊れていない
 3. 図表周辺のレイアウトが致命的に崩れていない
 4. キャプションや脚注の可読性が保たれている
-5. `precise` で stable に最後まで完走できる見込みがある
+5. `pdf2zh_next GUI` の現在設定で stable に最後まで完走できる見込みがある
 
 ### 20.6 全文時の運用
 
 全文時も、最初から極端に攻めない方がよいです。
 
-- `Translation Mode`: `precise`
 - translator: `OpenAI`
-- `number of threads`: まず `1`
-- 問題がなければ `2`
+- `QPS`: まず低め
+- `Pool Max Workers`: `QPS` と同程度か控えめ
+- `Auto Term Extraction`: on
 - `Ignore cache`: 通常 off、ただし設定変更直後は on
+- `translate_table_text`: on
 
 ここで重要なのは、今回の要件では**速さよりも壊れないこと**が上位だということです。
 
-### 20.7 `fast` をどう扱うか
+### 20.7 `pdf2zh_next GUI` を選ぶ意味
 
-今回の目的では `fast` を本番系に据えません。  
-ただし完全に不要でもありません。
+今回 `pdf2zh_next GUI` を選ぶ意味は、stable 1.x GUI では表に出てこなかった次のノブを直接扱える点にあります。
 
-`fast` の役割は次です。
+- `glossaries`
+- `save_auto_extracted_glossary`
+- `no_auto_extract_glossary`
+- `primary_font_family`
+- `skip_clean`
+- `dual_translate_first`
+- `disable_rich_text_translate`
+- `enhance_compatibility`
+- `use_alternating_pages_dual`
+- `watermark_output_mode`
+- `max_pages_per_part`
+- `translate_table_text`
+- `skip_scanned_detection`
+- `ocr_workaround`
+- `auto_enable_ocr_workaround`
+- `formular_char_pattern`
+- `non_formula_line_iou_threshold`
+- `figure_table_protection_threshold`
+- `skip_formula_offset_calculation`
 
-- 比較対照
-- `precise` だけで壊れるかの切り分け
-- pipeline 依存の失敗と translator 依存の失敗を分ける補助
-
-したがって、`fast` は「戻る先」や「比較対象」として残しますが、  
-最終成果物をそこへ寄せる必要はありません。
+今回の要件では、まさにこの露出が重要です。
 
 ### 20.8 `Ollama` を GUI-only で触るタイミング
 
@@ -1306,24 +1398,24 @@ stable root docs 自体が、
 
 順序としては
 
-1. `OpenAI + precise` で acceptable な first-page を得る
+1. `pdf2zh_next GUI + OpenAI` で acceptable な first-page を得る
 2. その same page を benchmark にする
 3. その後に `Ollama` を同じ page で比較する
 
 です。
 
 数学論文では、いきなり `Ollama` を本番に使うのではなく、  
-まず `OpenAI + precise` を品質基準面として確立しておく方が本質的に強いです。
+まず `pdf2zh_next GUI + OpenAI` を品質基準面として確立しておく方が本質的に強いです。
 
 ### 20.9 GUI-only で見逃しやすい本質
 
 最後に、GUI-only 運用で特に見逃しやすい本質を短くまとめます。
 
 - config で固定できるものと、GUI で毎回選ぶものは違う
-- `precise` は config だけでは on にならず、GUI の mode 切り替えが必要
-- `vfont` は persistent に効く重要ノブ
+- `pdf2zh_next GUI` では stable 1.x より多くの高品質ノブが直接露出する
+- `formular_font_pattern` と `formular_char_pattern` の両方を扱える
 - `Ignore cache` は検証の信頼性に直結する
-- 高品質の中心は translator 単体ではなく、`OpenAI + precise + formula protection` の組み合わせ
+- 高品質の中心は translator 単体ではなく、`OpenAI + BabelDOC-based pipeline + formula protection + conservative validation` の組み合わせ
 
 ---
 
@@ -1332,21 +1424,20 @@ stable root docs 自体が、
 今回の目的が
 
 - ローカル `Docker` で
-- stable image を
+- `pdf2zh_next GUI` を
 - 実際に使える構成で
 - なるべく迷わず
 - 将来的に API / proxy / `Ollama` まで拡張可能な形で
 
 使うことなら、最初の正解は次です。
 
-1. stable image を基準に据える
-2. docs は root stable docs を一次資料にする
-3. `config.json` を明示的に外へ出す
-4. `HOME` と作業ディレクトリを volume 化する
-5. `Google` first-page baseline を先に通す
-6. その後、まず `OpenAI` で作業を完了する
-7. 次に `BabelDOC` / `precise` を別レーンで試す
-8. 最後に `Ollama` を組み込む
+1. `docker-compose.yml` を基準に据える
+2. `config/pdf2zh_next.openai.toml` を主系統にする
+3. `OpenAI` を先に安定化する
+4. first-page で formula / layout / glossary extraction を検証する
+5. その設定のまま全文へ上げる
+6. その後、必要に応じて compatibility knobs を個別に調整する
+7. 最後に `docker-compose.ollama.yml` + `config/pdf2zh_next.ollama.toml` で比較する
 
 この順序は地味ですが、  
 今回のような「どこが悪いのか分からないまま複雑な経路に入る」状態を避けるうえで、本質的に強いです。
