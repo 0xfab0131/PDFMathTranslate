@@ -1,0 +1,66 @@
+{
+  "_REQUIRED_USER_INPUT_BEFORE_USE": [
+    "Replace translators[0].envs.OPENAI_API_KEY before first use.",
+    "If you use the official OpenAI API, keep OPENAI_BASE_URL as https://api.openai.com/v1.",
+    "If you use an OpenAI-compatible proxy, change OPENAI_BASE_URL and make sure it ends with /v1.",
+    "This file is intended for the stable byaidu/pdf2zh Docker image, with OpenAI as the main path.",
+    "For final mathematical or scientific papers, use OpenAI as the translator profile here, but prefer the GUI precise path once a one-page sanity check has passed."
+  ],
+  "_OPENAI_REQUIRED_FIELDS_SAMPLE": {
+    "OPENAI_BASE_URL": "https://api.openai.com/v1",
+    "OPENAI_API_KEY": "sk-your-openai-api-key-here",
+    "OPENAI_MODEL": "gpt-4o-mini"
+  },
+  "_OPTIONAL_OPENAI_TUNING_SAMPLE": {
+    "OPENAI_STREAM": "true",
+    "OPENAI_STOP_TOKENS": "",
+    "OPENAI_MAX_TOKENS": -1
+  },
+  "_QUALITY_FIRST_MODEL_NOTE": [
+    "gpt-4o-mini is kept here as the broad-compatibility starting point because it is the documented default.",
+    "For final mathematical-paper runs, if your environment supports a stronger OpenAI-compatible model that you trust more, replace OPENAI_MODEL after the one-page smoke test."
+  ],
+  "_GUI_FIELDS_NOT_CONTROLLED_BY_THIS_FILE": [
+    "Translation Mode (fast/precise) is a GUI choice in stable 1.x and is not persisted here.",
+    "number of threads is a GUI textbox defaulting in the app, not a value controlled by this file.",
+    "Pages, Ignore cache, and Skip font subsetting are GUI runtime choices, not persistent config keys in stable 1.x."
+  ],
+  "_HIGH_PRECISION_GUI_NOTES": [
+    "Stable 1.x GUI exposes Custom formula font regex via PDF2ZH_VFONT, but it does not expose a formula character regex field.",
+    "When you change formula regex or switch between fast and precise, turn on Ignore cache in the GUI for the next run.",
+    "For the first mathematical-paper validation run, use Pages=First and threads=1.",
+    "After the first sanity check passes, you can retry the real run in precise mode for higher layout fidelity."
+  ],
+  "_FORMULA_REGEX_SOURCE_NOTE": [
+    "The PDF2ZH_VFONT value below follows the stronger formula-font preservation pattern documented by the project.",
+    "Its role is to reduce accidental translation of mathematical glyph runs that are better preserved as formulas."
+  ],
+  "_STABLE_GUI_LIMITATIONS_FOR_HIGH_PRECISION": [
+    "Stable 1.x GUI does not expose many pdf2zh_next/BabelDOC quality knobs such as glossary files, OCR workaround policy, table-text translation, primary font family, or compatibility bundles as persistent config keys.",
+    "Within stable GUI-only operation, the most actionable precision levers are service choice, page scope, threads, Ignore cache, Translation Mode, and PDF2ZH_VFONT."
+  ],
+  "_NOTES": [
+    "Stable GUI may still show Google and Bing even when ENABLED_SERVICES contains only OpenAI.",
+    "HIDDEN_GRADIO_DETAILS hides API keys in the GUI, but it does not encrypt them in this file."
+  ],
+  "translators": [
+    {
+      "name": "openai",
+      "envs": {
+        "OPENAI_BASE_URL": "https://api.openai.com/v1",
+        "OPENAI_API_KEY": "sk-your-openai-api-key-here",
+        "OPENAI_MODEL": "gpt-4o-mini",
+        "OPENAI_STREAM": "true",
+        "OPENAI_STOP_TOKENS": "",
+        "OPENAI_MAX_TOKENS": -1
+      }
+    }
+  ],
+  "ENABLED_SERVICES": [
+    "OpenAI"
+  ],
+  "HIDDEN_GRADIO_DETAILS": true,
+  "PDF2ZH_LANG_FROM": "English",
+  "PDF2ZH_LANG_TO": "Japanese",
+  "PDF2ZH_VFONT": "(CM[^R]|MS.M|XY|MT|BL|RM|EU|LA|RS|LINE|LCIRCLE|TeX-|rsfs|txsy|wasy|stmary|.*Mono|.*Code|.*Ital|.*Sym|.*Math)"
+}

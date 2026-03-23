@@ -1,0 +1,68 @@
+{
+  "_REQUIRED_USER_INPUT_BEFORE_USE": [
+    "Replace translators[0].envs.OLLAMA_HOST to match your actual Docker topology before first use.",
+    "Replace translators[0].envs.OLLAMA_MODEL with a model that is already installed in your local Ollama.",
+    "If Ollama runs on the same host as Docker Desktop, start with http://host.docker.internal:11434.",
+    "If you are on Linux and host.docker.internal does not resolve, add host-gateway mapping in Docker or use a service name on the same Docker network.",
+    "Use this file only after OpenAI and then BabelDOC/precise have already been organized, because local Ollama introduces extra Docker networking variables and may reduce translation quality depending on the local model."
+  ],
+  "_OLLAMA_HOST_OPTIONS_SAMPLE": {
+    "docker_desktop_same_host": "http://host.docker.internal:11434",
+    "linux_with_host_gateway_mapping": "http://host.docker.internal:11434",
+    "separate_ollama_container_same_network": "http://ollama:11434"
+  },
+  "_OLLAMA_REQUIRED_FIELDS_SAMPLE": {
+    "OLLAMA_HOST": "http://host.docker.internal:11434",
+    "OLLAMA_MODEL": "gemma2"
+  },
+  "_QUALITY_NOTE": [
+    "This file is for later evaluation, not for the first quality-critical mathematical-paper production path.",
+    "If you want to compare local models fairly, keep OpenAI + precise outputs as the benchmark reference."
+  ],
+  "_OPTIONAL_ALTERNATIVE_OPENAI_LIKED_FOR_OLLAMA_SAMPLE": {
+    "OPENAILIKED_BASE_URL": "http://host.docker.internal:11434/v1",
+    "OPENAILIKED_API_KEY": "ollama",
+    "OPENAILIKED_MODEL": "llama3",
+    "OPENAILIKED_STREAM": "false"
+  },
+  "_RUNTIME_REMINDERS": [
+    "Do not leave OLLAMA_HOST as http://127.0.0.1:11434 unless Ollama is actually running inside the same container, which is not the normal setup.",
+    "For the first test, keep pages to First or a very small range and keep threads low.",
+    "If the GUI cannot connect, validate Docker networking before changing translation options."
+  ],
+  "_GUI_FIELDS_NOT_CONTROLLED_BY_THIS_FILE": [
+    "Translation Mode (fast/precise) is still a manual GUI choice in stable 1.x.",
+    "number of threads is a GUI runtime textbox and is not prefilled from this file.",
+    "Pages and Ignore cache are runtime GUI choices."
+  ],
+  "_MATH_PAPER_NOTES": [
+    "For mathematical papers, the direct Ollama path should be treated as a later optimization or independence step, not the first path to trust.",
+    "Local-model quality varies substantially; validate on a first page before trusting full-document mathematical notation preservation.",
+    "If final fidelity matters more than self-hosting purity, keep OpenAI as the benchmark even when evaluating Ollama."
+  ],
+  "_FORMULA_REGEX_SOURCE_NOTE": [
+    "Stable 1.x GUI persists the Custom formula font regex through PDF2ZH_VFONT.",
+    "This helps reduce accidental translation of formula glyph runs in math-heavy PDFs."
+  ],
+  "_STABLE_GUI_LIMITATIONS_FOR_LOCAL_MODELS": [
+    "Stable 1.x GUI does not expose enough advanced BabelDOC tuning knobs to make a weak local model behave like a strong hosted model purely through configuration.",
+    "Because of that, Ollama quality evaluation should focus on side-by-side comparison against OpenAI + precise on the same first page."
+  ],
+  "USE_MODELSCOPE": "0",
+  "translators": [
+    {
+      "name": "ollama",
+      "envs": {
+        "OLLAMA_HOST": "http://host.docker.internal:11434",
+        "OLLAMA_MODEL": "gemma2"
+      }
+    }
+  ],
+  "ENABLED_SERVICES": [
+    "Ollama"
+  ],
+  "HIDDEN_GRADIO_DETAILS": true,
+  "PDF2ZH_LANG_FROM": "English",
+  "PDF2ZH_LANG_TO": "Japanese",
+  "PDF2ZH_VFONT": "(CM[^R]|MS.M|XY|MT|BL|RM|EU|LA|RS|LINE|LCIRCLE|TeX-|rsfs|txsy|wasy|stmary|.*Mono|.*Code|.*Ital|.*Sym|.*Math)"
+}

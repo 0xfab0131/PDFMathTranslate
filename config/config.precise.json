@@ -1,0 +1,74 @@
+{
+  "_REQUIRED_USER_INPUT_BEFORE_USE": [
+    "Replace translators[0].envs.OPENAI_API_KEY before first use.",
+    "If you use the official OpenAI API, keep OPENAI_BASE_URL as https://api.openai.com/v1.",
+    "If you use an OpenAI-compatible proxy, change OPENAI_BASE_URL and make sure it ends with /v1.",
+    "This file is for the stable byaidu/pdf2zh Docker image, with OpenAI kept as the translator but BabelDOC/precise evaluated as the second-stage path.",
+    "This file does not force precise mode by itself. In the GUI, switch Translation Mode from fast to precise only after regular OpenAI translation is already working.",
+    "In stable 1.x GUI, even launching with -i while thinking in terms of precise does not automatically move the dropdown default away from fast."
+  ],
+  "_OPENAI_REQUIRED_FIELDS_SAMPLE": {
+    "OPENAI_BASE_URL": "https://api.openai.com/v1",
+    "OPENAI_API_KEY": "sk-your-openai-api-key-here",
+    "OPENAI_MODEL": "gpt-4o-mini"
+  },
+  "_QUALITY_FIRST_MODEL_NOTE": [
+    "gpt-4o-mini is kept here as the documented starting point for compatibility.",
+    "For final mathematical-paper runs in precise mode, replace OPENAI_MODEL with the strongest OpenAI-compatible model you actually trust and can access."
+  ],
+  "_RUNTIME_REMINDERS": [
+    "Use this only after config/config.json has already been verified with a successful OpenAI translation.",
+    "For the first precise test, keep pages to First or a very small range and keep threads low.",
+    "Do not mix Ollama or additional proxy experiments into the first precise trial.",
+    "If you use CLI without GUI, the structured v2 path is the --mode precise route; the older direct experimental path is --babeldoc."
+  ],
+  "_GUI_FIELDS_NOT_CONTROLLED_BY_THIS_FILE": [
+    "Translation Mode still has to be changed manually in the stable 1.x GUI dropdown from fast to precise.",
+    "number of threads is still a GUI runtime textbox and is not prefilled from this file.",
+    "Pages and Ignore cache are still runtime GUI choices."
+  ],
+  "_GUI_ONLY_PRECISE_RUNBOOK": [
+    "1. Start from an OpenAI configuration that already succeeded once.",
+    "2. Open the stable GUI and confirm Service=OpenAI.",
+    "3. Switch Translation Mode from fast to precise.",
+    "4. Keep Pages=First for the first precise validation run.",
+    "5. Set threads=1 for the first precise validation run.",
+    "6. Turn on Ignore cache when testing a changed formula regex or changed mode.",
+    "7. Only after a clean first-page result should you move to larger page ranges or the full paper."
+  ],
+  "_MATH_PAPER_NOTES": [
+    "BabelDOC formula/style processing depends heavily on formula font identification, style grouping, and offset recovery.",
+    "For Japanese target output, BabelDOC's supported-languages table is structurally favorable because Japanese is listed with no ligature dependency.",
+    "At the same time, BabelDOC historically focused most heavily on English-to-Chinese, so a first-page validation remains important before full-document runs."
+  ],
+  "_STABLE_GUI_LIMITATIONS_FOR_PRECISE": [
+    "Even in precise mode, stable 1.x GUI does not surface many pdf2zh_next/BabelDOC advanced controls such as glossary files, table-text translation, OCR policy, primary font family, or compatibility bundles.",
+    "Therefore the practical high-precision GUI-only strategy is not 'turn on every hidden feature', but rather 'use OpenAI + precise + strong formula font protection + conservative validation sequence'."
+  ],
+  "_OPTIONAL_OPENAI_TUNING_SAMPLE": {
+    "OPENAI_STREAM": "true",
+    "OPENAI_STOP_TOKENS": "",
+    "OPENAI_MAX_TOKENS": -1
+  },
+  "USE_MODELSCOPE": "0",
+  "translators": [
+    {
+      "name": "openai",
+      "envs": {
+        "OPENAI_BASE_URL": "https://api.openai.com/v1",
+        "OPENAI_API_KEY": "sk-your-openai-api-key-here",
+        "OPENAI_MODEL": "gpt-4o-mini",
+        "OPENAI_STREAM": "true",
+        "OPENAI_STOP_TOKENS": "",
+        "OPENAI_MAX_TOKENS": -1
+      }
+    }
+  ],
+  "ENABLED_SERVICES": [
+    "OpenAI"
+  ],
+  "HIDDEN_GRADIO_DETAILS": true,
+  "PDF2ZH_LANG_FROM": "English",
+  "PDF2ZH_LANG_TO": "Japanese",
+  "PDF2ZH_VFONT": "(CM[^R]|MS.M|XY|MT|BL|RM|EU|LA|RS|LINE|LCIRCLE|TeX-|rsfs|txsy|wasy|stmary|.*Mono|.*Code|.*Ital|.*Sym|.*Math)"
+}
