@@ -17,7 +17,7 @@
 # - If the document is scan-like: set auto_enable_ocr_workaround=true
 # - If throughput matters after quality is confirmed: raise qps/pool_max_workers carefully
 
-report_interval = 0.25
+report_interval = 0.5
 openai = true
 term_openai = true
 
