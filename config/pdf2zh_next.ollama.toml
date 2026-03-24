@@ -2,7 +2,7 @@
 # Do not start from this path for quality-critical mathematical papers.
 # First stabilize the OpenAI configuration, then compare this configuration on the same first page.
 
-report_interval = 0.5
+report_interval = 0.1
 ollama = true
 term_openai = true
 
