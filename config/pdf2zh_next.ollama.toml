@@ -2,7 +2,7 @@
 # Do not start from this path for quality-critical mathematical papers.
 # First stabilize the OpenAI configuration, then compare this configuration on the same first page.
 
-report_interval = 0.1
+report_interval = 0.5
 ollama = true
 term_openai = true
 
@@ -23,15 +23,22 @@ ui_lang = "ja"
 lang_in = "en"
 lang_out = "ja"
 output = "/app/pdf2zh_files"
-qps = 10
 ignore_cache = false
 min_text_length = 5
 custom_system_prompt = '''You are a professional Japanese translator for mathematical and scientific papers. Translate only natural-language content into Japanese. Preserve formulas, symbols, placeholders, tags, code identifiers, citation markers, equation references, numbering, and inline notation exactly as they appear. Do not add explanations, comments, apologies, or omitted content. Do not simplify, normalize, or reinterpret mathematical claims. Maintain formal academic Japanese and preserve the logical force of definitions, assumptions, lemmas, theorems, proofs, remarks, corollaries, captions, and references. When uncertain about a token, prefer preserving the original token exactly rather than guessing.'''
 save_auto_extracted_glossary = true
 no_auto_extract_glossary = false
-pool_max_workers = 10
-term_qps = 2
-term_pool_max_workers = 2
+# qps = 10
+# pool_max_workers = 10
+# # Keep term extraction moderately parallel when it is offloaded to OpenAI.
+# term_qps = 4
+# term_pool_max_workers = 4
+# Higher-throughput example after quality is already validated:
+qps = 12
+pool_max_workers = 12
+# Keep term extraction moderately parallel when it is offloaded to OpenAI.
+term_qps = 12
+term_pool_max_workers = 12
 # Optional typography override only if Japanese body text looks visually inconsistent:
 # primary_font_family = "serif"
 

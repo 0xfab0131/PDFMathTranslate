@@ -24,8 +24,12 @@ services:
       # HF_ENDPOINT: "https://hf-mirror.com"
     volumes:
       - ./config:/config:ro
-      - ./state/pdf2zh_next/home:/state/home
-      - ./work/pdf2zh_next/pdf2zh_files:/app/pdf2zh_files
+    # Keep runtime state and generated outputs off the host filesystem.
+    # Both locations live only in RAM while the container is running.
+    # Download the final PDF from the GUI before stopping the container.
+    tmpfs:
+      - /state/home:rw,exec,nosuid,size=2g
+      - /app/pdf2zh_files:rw,exec,nosuid,size=8g
     command:
       - pdf2zh
       - --gui
