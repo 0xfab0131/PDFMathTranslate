@@ -1,7 +1,7 @@
 .PHONY: next pull down logs
 
 next:
-	docker compose up
+	docker compose up --build
 
 pull:
 	docker compose pull

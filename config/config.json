@@ -13,7 +13,7 @@
   "_OPENAI_REQUIRED_FIELDS_SAMPLE": {
     "OPENAI_BASE_URL": "https://api.openai.com/v1",
     "OPENAI_API_KEY": "sk-your-openai-api-key-here",
-    "OPENAI_MODEL": "gpt-4.1-mini"
+    "OPENAI_MODEL": "gpt-4o-mini"
   },
   "_OPTIONAL_OPENAI_TUNING_SAMPLE": {
     "OPENAI_STREAM": "true",
@@ -21,7 +21,7 @@
     "OPENAI_MAX_TOKENS": -1
   },
   "_QUALITY_FIRST_MODEL_NOTE": [
-    "gpt-4.1-mini is kept here as the broad-compatibility starting point because it is the documented default.",
+    "gpt-4o-mini is kept here as the broad-compatibility starting point because it is the documented default.",
     "For final mathematical-paper runs, if your environment supports a stronger OpenAI-compatible model that you trust more, replace OPENAI_MODEL after the one-page smoke test."
   ],
   "_GUI_FIELDS_NOT_CONTROLLED_BY_THIS_FILE": [
@@ -53,7 +53,7 @@
       "envs": {
         "OPENAI_BASE_URL": "https://api.openai.com/v1",
         "OPENAI_API_KEY": "sk-your-openai-api-key-here",
-        "OPENAI_MODEL": "gpt-4.1-mini",
+        "OPENAI_MODEL": "gpt-4o-mini",
         "OPENAI_STREAM": "true",
         "OPENAI_STOP_TOKENS": "",
         "OPENAI_MAX_TOKENS": -1

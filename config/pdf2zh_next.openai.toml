@@ -49,10 +49,10 @@ no_auto_extract_glossary = false
 # term_qps = 4
 # term_pool_max_workers = 4
 # Higher-throughput example after quality is already validated:
-qps = 40
-pool_max_workers = 40
-term_qps = 40
-term_pool_max_workers = 40
+qps = 50
+pool_max_workers = 50
+term_qps = 50
+term_pool_max_workers = 50
 
 # Optional after manual review:
 # glossaries = "/config/glossaries/category-topos-alggeo-ja.example.csv"
@@ -115,7 +115,7 @@ max_pages_per_part = 50
 #
 # Keep the base URL ending with /v1.
 # Replace the model after the first-page sanity check if you trust a stronger model more.
-openai_model = "gpt-4.1-mini"
+openai_model = "gpt-4o-mini"
 openai_base_url = "https://api.openai.com/v1"
 openai_timeout = "500"
 openai_temperature = "0.0"
@@ -129,7 +129,7 @@ openai_send_temprature = true
 # Dedicated term-extraction engine.
 # Keep secrets out of Git and provide them via `.env`, e.g.:
 #   PDF2ZH_TERM_OPENAI_API_KEY=...
-term_openai_model = "gpt-4.1-mini"
+term_openai_model = "gpt-4o-mini"
 term_openai_base_url = "https://api.openai.com/v1"
 term_openai_timeout = "600"
 term_openai_temperature = "0.0"

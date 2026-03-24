@@ -183,7 +183,7 @@ GUI 中心運用なら必須ではありません。
       "envs": {
         "OPENAI_BASE_URL": "https://api.openai.com/v1",
         "OPENAI_API_KEY": "your-api-key",
-        "OPENAI_MODEL": "gpt-4.1-mini"
+        "OPENAI_MODEL": "gpt-4o-mini"
       }
     }
   ]

@@ -14,10 +14,10 @@
   "_OPENAI_REQUIRED_FIELDS_SAMPLE": {
     "OPENAI_BASE_URL": "https://api.openai.com/v1",
     "OPENAI_API_KEY": "sk-your-openai-api-key-here",
-    "OPENAI_MODEL": "gpt-4.1-mini"
+    "OPENAI_MODEL": "gpt-4o-mini"
   },
   "_QUALITY_FIRST_MODEL_NOTE": [
-    "gpt-4.1-mini is kept here as the documented starting point for compatibility.",
+    "gpt-4o-mini is kept here as the documented starting point for compatibility.",
     "For final mathematical-paper runs in precise mode, replace OPENAI_MODEL with the strongest OpenAI-compatible model you actually trust and can access."
   ],
   "_RUNTIME_REMINDERS": [
@@ -61,7 +61,7 @@
       "envs": {
         "OPENAI_BASE_URL": "https://api.openai.com/v1",
         "OPENAI_API_KEY": "sk-your-openai-api-key-here",
-        "OPENAI_MODEL": "gpt-4.1-mini",
+        "OPENAI_MODEL": "gpt-4o-mini",
         "OPENAI_STREAM": "true",
         "OPENAI_STOP_TOKENS": "",
         "OPENAI_MAX_TOKENS": -1

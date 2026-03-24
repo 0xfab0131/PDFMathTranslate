@@ -670,7 +670,7 @@ API 系 translator の設定は**基本的に `config.json` へ書く**のが最
       "envs": {
         "OPENAI_BASE_URL": "https://api.openai.com/v1",
         "OPENAI_API_KEY": "your-api-key",
-        "OPENAI_MODEL": "gpt-4.1-mini"
+        "OPENAI_MODEL": "gpt-4o-mini"
       }
     }
   ],

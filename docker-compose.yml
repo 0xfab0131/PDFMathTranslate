@@ -5,13 +5,18 @@
 # other high-precision document-processing options.
 #
 # IMPORTANT:
-# For this use case, a local source build is not required.
-# The docs already provide official Docker images for pdf2zh_next.
-# This compose file therefore uses the official latest image path by default.
+# We extend the official pdf2zh_next image with a tiny local build step that
+# prewarms BabelDOC assets into the image layer. This avoids repeated asset
+# downloads on every GUI startup while keeping runtime translation data volatile.
 
 services:
   pdf2zh_next_gui:
-    image: ${PDF2ZH_NEXT_IMAGE:-awwaawwa/pdfmathtranslate-next:latest}
+    image: ${PDF2ZH_NEXT_IMAGE:-pdfmathtranslate-next-prewarmed:local}
+    build:
+      context: .
+      dockerfile: docker/pdf2zh-next-prewarmed.Dockerfile
+      args:
+        PDF2ZH_NEXT_BASE_IMAGE: ${PDF2ZH_NEXT_BASE_IMAGE:-awwaawwa/pdfmathtranslate-next:latest}
     container_name: pdf2zh-next-openai-gui
     ports:
       - "7860:7860"
@@ -25,8 +30,7 @@ services:
     volumes:
       - ./config:/config:ro
     # Keep runtime state and generated outputs off the host filesystem.
-    # Both locations live only in RAM while the container is running.
-    # Download the final PDF from the GUI before stopping the container.
+    # Only the static BabelDOC assets are baked into the image and reused.
     tmpfs:
       - /state/home:rw,exec,nosuid,size=2g
       - /app/pdf2zh_files:rw,exec,nosuid,size=8g
@@ -39,9 +43,10 @@ services:
     tty: true
     restart: unless-stopped
 
-    # To switch image source or config profile, prefer changing `.env` instead of adding more compose files.
+    # To switch base image source or config profile, prefer changing `.env`
+    # instead of adding more compose files.
     # Example:
-    #   PDF2ZH_NEXT_IMAGE=ghcr.io/PDFMathTranslate/PDFMathTranslate-next:latest
+    #   PDF2ZH_NEXT_BASE_IMAGE=ghcr.io/PDFMathTranslate/PDFMathTranslate-next:latest
     #   PDF2ZH_NEXT_CONFIG_FILE=/config/pdf2zh_next.ollama.toml
     #
     # If needed on Linux, add:
