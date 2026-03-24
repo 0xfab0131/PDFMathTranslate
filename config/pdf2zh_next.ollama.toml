@@ -39,6 +39,7 @@ Your highest priority is semantic invariance: do not change mathematical content
 Preserve exactly, without translation, rewriting, normalization, or explanation:
 - formulas, displayed equations, inline math, LaTeX commands, operators, variables, symbols, placeholders, XML/HTML-like tags, citation markers, reference labels, numbering, code identifiers, URLs, file paths, and other non-prose artifacts
 - notation-like English or symbolic tokens when they serve as formal names or labels, including names of objects, maps, functors, categories, spaces, schemes, groups, diagrams, arrows, algorithms, models, datasets, sections, named conditions, and role-bearing tokens such as Hom, End, Aut, Spec, Proj, Ext, Tor, lim, colim, id, or analogous field-specific notation
+- logical or rule-like English tokens such as if, then, iff, only if, let, assume, suppose, where, for all, exists, implies, ∀, ∃, ∴, ∵, and, or, not, otherwise, case, return, or similar short tokens when they function as formal operators, rule keywords, inference-schema words, derivation labels, pseudo-code keywords, table/list labels, appendix schema markers, or other notation-like metalanguage rather than ordinary prose
 - any token whose structural role would be damaged by translation
 
 Translate technical terminology in prose into standard Japanese used in the relevant field. Do not impose vocabulary from one specialty onto another. When a term has multiple possible conventions, infer from the local context and choose the most field-appropriate standard Japanese. If genuine ambiguity remains between prose and notation, or between a descriptive term and a formal label, preserve the original token exactly rather than forcing a narrow interpretation.
@@ -46,6 +47,8 @@ Translate technical terminology in prose into standard Japanese used in the rele
 Maintain the exact force of definitions, assumptions, lemmas, propositions, theorems, proofs, remarks, examples, corollaries, captions, references, algorithmic steps, and stated conditions. Preserve distinctions such as equality vs identity vs isomorphism vs equivalence, source vs target, domain vs codomain, left vs right, covariant vs contravariant, local vs global, necessary vs sufficient, existence vs uniqueness, and assumptions vs conclusions.
 
 Pay special attention to universal-property language, functoriality, naturality, adjunctions, exactness, descent, base change, local-to-global arguments, commutative diagrams, asymptotic or complexity statements, and any sentence whose meaning depends on scope, variance, directionality, or a label remaining unchanged. Never reverse direction, weaken a hypothesis, erase a condition, or collapse structurally distinct notions.
+
+In structured regions such as tables, appendices, itemized or enumerated lists, aligned cases, numbered conditions, columnar summaries, or cell-based layouts, preserve row and item boundaries, label correspondence, and local parallelism. Translate each item conservatively and compactly; do not fuse adjacent cells or list items into one flowing paragraph, and do not expand brief structural text into verbose prose.
 
 When multiple sentences or clauses are present, translate them as one connected scholarly passage. Preserve antecedents, rhetorical continuity, and the progression of the argument. Recover natural Japanese flow across artificial PDF line breaks when the meaning is clear, but do not add content, omit content, merge distinct claims, invent hidden premises, or translate notation into explanatory prose.
 
@@ -73,7 +76,7 @@ no_dual = false
 no_mono = false
 formular_font_pattern = '(CM[^R]|MS.M|XY|MT|BL|RM|EU|LA|RS|LINE|LCIRCLE|TeX-|rsfs|txsy|wasy|stmary|.*Mono|.*Code|.*Ital|.*Sym|.*Math)'
 formular_char_pattern = '(\(|\||\)|\+|=|\d|[\u0080-\ufaff])'
-split_short_lines = false
+split_short_lines = true
 short_line_split_factor = 0.8
 skip_clean = false
 dual_translate_first = false
@@ -83,6 +86,9 @@ enhance_compatibility = false
 use_alternating_pages_dual = true
 # Prefer clean final artifacts by default; switch back in the GUI if you need visible provenance.
 watermark_output_mode = "no_watermark"
+# Table translation is still experimental and tends to destabilize structured layouts.
+# Prefer preserving table geometry by default; re-enable only when table text translation
+# is more important than layout stability for the current document.
 translate_table_text = true
 skip_scanned_detection = false
 ocr_workaround = false
@@ -91,7 +97,7 @@ only_include_translated_page = false
 no_merge_alternating_line_numbers = false
 no_remove_non_formula_lines = true
 non_formula_line_iou_threshold = 0.9
-figure_table_protection_threshold = 0.9
+figure_table_protection_threshold = 0.95
 skip_formula_offset_calculation = false
 max_pages_per_part = 50
 
