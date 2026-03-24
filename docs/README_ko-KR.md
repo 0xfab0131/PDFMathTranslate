@@ -224,8 +224,8 @@ pdf2zh example.pdf -li en -lo ko
 | **DeepL**           | `deepl`        | `DEEPL_AUTH_KEY`                                                      | `[Your Key]`                                             | [DeepL](https://support.deepl.com/hc/en-us/articles/360020695820-API-Key-for-DeepL-s-API) 참조                                                                                                             |
 | **DeepLX**          | `deeplx`       | `DEEPLX_ENDPOINT`                                                     | `https://api.deepl.com/translate`                        | [DeepLX](https://github.com/OwO-Network/DeepLX) 참조                                                                                                                                                       |
 | **Ollama**          | `ollama`       | `OLLAMA_HOST`, `OLLAMA_MODEL`                                         | `http://127.0.0.1:11434`, `gemma2`                       | [Ollama](https://github.com/ollama/ollama) 참조                                                                                                                                                            |
-| **OpenAI**          | `openai`       | `OPENAI_BASE_URL`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_STOP_TOKENS`, `OPENAI_MAX_TOKENS`| `https://api.openai.com/v1`, `[Your Key]`, `gpt-4o-mini`, ` `, `-1` | [OpenAI](https://platform.openai.com/docs/overview) 참조                                                                                                                                                   |
-| **AzureOpenAI**     | `azure-openai` | `AZURE_OPENAI_BASE_URL`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_MODEL` | `[Your Endpoint]`, `[Your Key]`, `gpt-4o-mini`           | [Azure OpenAI](https://learn.microsoft.com/zh-cn/azure/ai-services/openai/chatgpt-quickstart?tabs=command-line%2Cjavascript-keyless%2Ctypescript-keyless%2Cpython&pivots=programming-language-python) 참조 |
+| **OpenAI**          | `openai`       | `OPENAI_BASE_URL`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_STOP_TOKENS`, `OPENAI_MAX_TOKENS`| `https://api.openai.com/v1`, `[Your Key]`, `gpt-4.1-nano`, ` `, `-1` | [OpenAI](https://platform.openai.com/docs/overview) 참조                                                                                                                                                   |
+| **AzureOpenAI**     | `azure-openai` | `AZURE_OPENAI_BASE_URL`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_MODEL` | `[Your Endpoint]`, `[Your Key]`, `gpt-4.1-nano`           | [Azure OpenAI](https://learn.microsoft.com/zh-cn/azure/ai-services/openai/chatgpt-quickstart?tabs=command-line%2Cjavascript-keyless%2Ctypescript-keyless%2Cpython&pivots=programming-language-python) 참조 |
 | **Zhipu**           | `zhipu`        | `ZHIPU_API_KEY`, `ZHIPU_MODEL`                                        | `[Your Key]`, `glm-4-flash`                              | [Zhipu](https://open.bigmodel.cn/dev/api/thirdparty-frame/openai-sdk) 참조                                                                                                                                 |
 | **ModelScope**      | `modelscope`   | `MODELSCOPE_API_KEY`, `MODELSCOPE_MODEL`                              | `[Your Key]`, `Qwen/Qwen2.5-Coder-32B-Instruct`          | [ModelScope](https://www.modelscope.cn/docs/model-service/API-Inference/intro) 참조                                                                                                                        |
 | **Silicon**         | `silicon`      | `SILICON_API_KEY`, `SILICON_MODEL`                                    | `[Your Key]`, `Qwen/Qwen2.5-7B-Instruct`                 | [SiliconCloud](https://docs.siliconflow.cn/quickstart) 참조                                                                                                                                                |
@@ -246,20 +246,20 @@ pdf2zh example.pdf -li en -lo ko
 `-s service` 또는 `-s service:model`을 사용하여 번역 서비스를 지정합니다:
 
 ```bash
-pdf2zh example.pdf -s openai:gpt-4o-mini
+pdf2zh example.pdf -s openai:gpt-4.1-nano
 ```
 
 또는 환경 변수로 모델을 지정합니다:
 
 ```bash
-set OPENAI_MODEL=gpt-4o-mini
+set OPENAI_MODEL=gpt-4.1-nano
 pdf2zh example.pdf -s openai
 ```
 
 PowerShell 사용자의 경우:
 
 ```shell
-$env:OPENAI_MODEL = gpt-4o-mini
+$env:OPENAI_MODEL = gpt-4.1-nano
 pdf2zh example.pdf -s openai
 ```
 

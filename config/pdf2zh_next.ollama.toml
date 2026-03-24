@@ -81,7 +81,7 @@ num_predict = 2000
 # Keep the main body translation on Ollama, but offload automatic term extraction to OpenAI.
 # Provide the secret via `.env`, e.g.:
 #   PDF2ZH_TERM_OPENAI_API_KEY=...
-term_openai_model = "gpt-4o-mini"
+term_openai_model = "gpt-4.1-nano"
 term_openai_base_url = "https://api.openai.com/v1"
 term_openai_timeout = "600"
 term_openai_temperature = "0.0"

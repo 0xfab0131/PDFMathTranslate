@@ -403,7 +403,7 @@ class OpenAITranslator(BaseTranslator):
     envs = {
         "OPENAI_BASE_URL": "https://api.openai.com/v1",
         "OPENAI_API_KEY": None,
-        "OPENAI_MODEL": "gpt-4o-mini",
+        "OPENAI_MODEL": "gpt-4.1-nano",
         "OPENAI_STREAM": "true",  # Configurable: set to "true" (default) or "false"
         "OPENAI_STOP_TOKENS": "",  # Space separated list of stop tokens
         "OPENAI_MAX_TOKENS": -1,  # Specify -1 to call the API without setting max_tokens
@@ -503,7 +503,7 @@ class AzureOpenAITranslator(BaseTranslator):
     envs = {
         "AZURE_OPENAI_BASE_URL": None,  # e.g. "https://xxx.openai.azure.com"
         "AZURE_OPENAI_API_KEY": None,
-        "AZURE_OPENAI_MODEL": "gpt-4o-mini",
+        "AZURE_OPENAI_MODEL": "gpt-4.1-nano",
         "AZURE_OPENAI_API_VERSION": "2024-06-01",  # default api version
     }
     CustomPrompt = True

@@ -56,12 +56,12 @@ We've provided a detailed table on the required [environment variables](https://
 | **Google (Default)** | `google`       | None                                                                  | N/A                                                      | None                                                                                                                                                                                                      |
 | **Bing**             | `bing`         | None                                                                  | N/A                                                      | None                                                                                                                                                                                                      |
 | **302.AI**           | `302ai`       | `X302AI_API_KEY`, `X302AI_MODEL`                                         | `[Your Key]`, `Gemma-7B` | See [302.AI](https://share.302.ai/tqTWfD)                                                                                                                                                   |
-| **OpenAI**           | `openai`       | `OPENAI_BASE_URL`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_STOP_TOKENS`, `OPENAI_MAX_TOKENS` | `https://api.openai.com/v1`, `[Your Key]`, `gpt-4o-mini`, ` `, `-1` | See [OpenAI](https://platform.openai.com/docs/overview)                                                                                                                                                   |
+| **OpenAI**           | `openai`       | `OPENAI_BASE_URL`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_STOP_TOKENS`, `OPENAI_MAX_TOKENS` | `https://api.openai.com/v1`, `[Your Key]`, `gpt-4.1-nano`, ` `, `-1` | See [OpenAI](https://platform.openai.com/docs/overview)                                                                                                                                                   |
 | **DeepL**            | `deepl`        | `DEEPL_AUTH_KEY`                                                      | `[Your Key]`                                             | See [DeepL](https://support.deepl.com/hc/en-us/articles/360020695820-API-Key-for-DeepL-s-API)                                                                                                             |
 | **DeepLX**           | `deeplx`       | `DEEPLX_ENDPOINT`                                                     | `https://api.deepl.com/translate`                        | See [DeepLX](https://github.com/OwO-Network/DeepLX)                                                                                                                                                       |
 | **Ollama**           | `ollama`       | `OLLAMA_HOST`, `OLLAMA_MODEL`                                         | `http://127.0.0.1:11434`, `gemma2`                       | See [Ollama](https://github.com/ollama/ollama)                                                                                                                                                            |
 | **Xinference**       | `xinference`   | `XINFERENCE_HOST`, `XINFERENCE_MODEL`                                 | `http://127.0.0.1:9997`, `gemma-2-it`                    | See [Xinference](https://github.com/xorbitsai/inference)                                                                                                                                                                                        |
-| **AzureOpenAI**      | `azure-openai` | `AZURE_OPENAI_BASE_URL`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_MODEL` | `[Your Endpoint]`, `[Your Key]`, `gpt-4o-mini`           | See [Azure OpenAI](https://learn.microsoft.com/zh-cn/azure/ai-services/openai/chatgpt-quickstart?tabs=command-line%2Cjavascript-keyless%2Ctypescript-keyless%2Cpython&pivots=programming-language-python) |
+| **AzureOpenAI**      | `azure-openai` | `AZURE_OPENAI_BASE_URL`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_MODEL` | `[Your Endpoint]`, `[Your Key]`, `gpt-4.1-nano`           | See [Azure OpenAI](https://learn.microsoft.com/zh-cn/azure/ai-services/openai/chatgpt-quickstart?tabs=command-line%2Cjavascript-keyless%2Ctypescript-keyless%2Cpython&pivots=programming-language-python) |
 | **Zhipu**            | `zhipu`        | `ZHIPU_API_KEY`, `ZHIPU_MODEL`                                        | `[Your Key]`, `glm-4-flash`                              | See [Zhipu](https://open.bigmodel.cn/dev/api/thirdparty-frame/openai-sdk)                                                                                                                                 |
 | **ModelScope**       | `modelscope`   | `MODELSCOPE_API_KEY`, `MODELSCOPE_MODEL`                              | `[Your Key]`, `Qwen/Qwen2.5-Coder-32B-Instruct`          | See [ModelScope](https://www.modelscope.cn/docs/model-service/API-Inference/intro)                                                                                                                        |
 | **Silicon**          | `silicon`      | `SILICON_API_KEY`, `SILICON_MODEL`                                    | `[Your Key]`, `Qwen/Qwen2.5-7B-Instruct`                 | See [SiliconCloud](https://docs.siliconflow.cn/quickstart)                                                                                                                                                |
@@ -84,20 +84,20 @@ For large language models that are compatible with the OpenAI API but not listed
 Use `-s service` or `-s service:model` to specify service:
 
 ```bash
-pdf2zh example.pdf -s openai:gpt-4o-mini
+pdf2zh example.pdf -s openai:gpt-4.1-nano
 ```
 
 Or specify model with environment variables:
 
 ```bash
-set OPENAI_MODEL=gpt-4o-mini
+set OPENAI_MODEL=gpt-4.1-nano
 pdf2zh example.pdf -s openai
 ```
 
 For PowerShell user:
 
 ```shell
-$env:OPENAI_MODEL = gpt-4o-mini
+$env:OPENAI_MODEL = gpt-4.1-nano
 pdf2zh example.pdf -s openai
 ```
 
@@ -316,7 +316,7 @@ A usable configuration is as follows:
             "envs": {
                 "OPENAI_BASE_URL": "https://api.openai.com/v1",
                 "OPENAI_API_KEY": "sk-xxxx",
-                "OPENAI_MODEL": "gpt-4o-mini"
+                "OPENAI_MODEL": "gpt-4.1-nano"
             }
         }
     ],

@@ -216,8 +216,8 @@ pdf2zh example.pdf -li en -lo ja
 |**DeepL**|`deepl`|`DEEPL_AUTH_KEY`|`[Your Key]`|參閱 [DeepL](https://support.deepl.com/hc/en-us/articles/360020695820-API-Key-for-DeepL-s-API)|
 |**DeepLX**|`deeplx`|`DEEPLX_ENDPOINT`|`https://api.deepl.com/translate`|參閱 [DeepLX](https://github.com/OwO-Network/DeepLX)|
 |**Ollama**|`ollama`|`OLLAMA_HOST`, `OLLAMA_MODEL`|`http://127.0.0.1:11434`, `gemma2`|參閱 [Ollama](https://github.com/ollama/ollama)|
-|**OpenAI**|`openai`|`OPENAI_BASE_URL`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_STOP_TOKENS`, `OPENAI_MAX_TOKENS`|`https://api.openai.com/v1`, `[Your Key]`, `gpt-4o-mini`, ` `, `-1`|參閱 [OpenAI](https://platform.openai.com/docs/overview)|
-|**AzureOpenAI**|`azure-openai`|`AZURE_OPENAI_BASE_URL`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_MODEL`|`[Your Endpoint]`, `[Your Key]`, `gpt-4o-mini`|參閱 [Azure OpenAI](https://learn.microsoft.com/zh-cn/azure/ai-services/openai/chatgpt-quickstart?tabs=command-line%2Cjavascript-keyless%2Ctypescript-keyless%2Cpython&pivots=programming-language-python)|
+|**OpenAI**|`openai`|`OPENAI_BASE_URL`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_STOP_TOKENS`, `OPENAI_MAX_TOKENS`|`https://api.openai.com/v1`, `[Your Key]`, `gpt-4.1-nano`, ` `, `-1`|參閱 [OpenAI](https://platform.openai.com/docs/overview)|
+|**AzureOpenAI**|`azure-openai`|`AZURE_OPENAI_BASE_URL`, `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_MODEL`|`[Your Endpoint]`, `[Your Key]`, `gpt-4.1-nano`|參閱 [Azure OpenAI](https://learn.microsoft.com/zh-cn/azure/ai-services/openai/chatgpt-quickstart?tabs=command-line%2Cjavascript-keyless%2Ctypescript-keyless%2Cpython&pivots=programming-language-python)|
 |**Zhipu**|`zhipu`|`ZHIPU_API_KEY`, `ZHIPU_MODEL`|`[Your Key]`, `glm-4-flash`|參閱 [Zhipu](https://open.bigmodel.cn/dev/api/thirdparty-frame/openai-sdk)|
 | **ModelScope**       | `modelscope`   |`MODELSCOPE_API_KEY`, `MODELSCOPE_MODEL`|`[Your Key]`, `Qwen/Qwen2.5-Coder-32B-Instruct`| 參閱 [ModelScope](https://www.modelscope.cn/docs/model-service/API-Inference/intro)|
 |**Silicon**|`silicon`|`SILICON_API_KEY`, `SILICON_MODEL`|`[Your Key]`, `Qwen/Qwen2.5-7B-Instruct`|參閱 [SiliconCloud](https://docs.siliconflow.cn/quickstart)|
@@ -238,13 +238,13 @@ pdf2zh example.pdf -li en -lo ja
 使用 `-s service` 或 `-s service:model` 指定翻譯服務：
 
 ```bash
-pdf2zh example.pdf -s openai:gpt-4o-mini
+pdf2zh example.pdf -s openai:gpt-4.1-nano
 ```
 
 或使用環境變數指定模型：
 
 ```bash
-set OPENAI_MODEL=gpt-4o-mini
+set OPENAI_MODEL=gpt-4.1-nano
 pdf2zh example.pdf -s openai
 ```
 

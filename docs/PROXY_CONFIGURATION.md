@@ -68,7 +68,7 @@ For custom proxies that don't support streaming:
     "envs": {
         "OPENAI_BASE_URL": "https://api.openai.com/v1",
         "OPENAI_API_KEY": "your-api-key",
-        "OPENAI_MODEL": "gpt-4o-mini",
+        "OPENAI_MODEL": "gpt-4.1-nano",
         "OPENAI_STREAM": "true"
     }
 }
