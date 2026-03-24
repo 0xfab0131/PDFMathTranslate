@@ -34,11 +34,11 @@ no_auto_extract_glossary = false
 # term_qps = 4
 # term_pool_max_workers = 4
 # Higher-throughput example after quality is already validated:
-qps = 12
-pool_max_workers = 12
+qps = 10
+pool_max_workers = 10
 # Keep term extraction moderately parallel when it is offloaded to OpenAI.
-term_qps = 12
-term_pool_max_workers = 12
+term_qps = 10
+term_pool_max_workers = 10
 # Optional typography override only if Japanese body text looks visually inconsistent:
 # primary_font_family = "serif"
 

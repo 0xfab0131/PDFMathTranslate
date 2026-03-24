@@ -49,10 +49,10 @@ no_auto_extract_glossary = false
 # term_qps = 4
 # term_pool_max_workers = 4
 # Higher-throughput example after quality is already validated:
-qps = 20
-pool_max_workers = 20
-term_qps = 20
-term_pool_max_workers = 20
+qps = 10
+pool_max_workers = 10
+term_qps = 10
+term_pool_max_workers = 10
 
 # Optional after manual review:
 # glossaries = "/config/glossaries/category-topos-alggeo-ja.example.csv"
