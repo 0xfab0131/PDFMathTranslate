@@ -1,10 +1,10 @@
-.PHONY: next-openai next-ollama down logs
+.PHONY: next pull down logs
 
-next-openai:
+next:
 	docker compose up
 
-next-ollama:
-	docker compose -f docker-compose.yml -f docker-compose.ollama.yml up
+pull:
+	docker compose pull
 
 down:
 	docker compose down

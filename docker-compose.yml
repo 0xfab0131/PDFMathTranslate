@@ -11,7 +11,7 @@
 
 services:
   pdf2zh_next_gui:
-    image: awwaawwa/pdfmathtranslate-next:latest
+    image: ${PDF2ZH_NEXT_IMAGE:-awwaawwa/pdfmathtranslate-next:latest}
     container_name: pdf2zh-next-openai-gui
     ports:
       - "7860:7860"
@@ -30,16 +30,16 @@ services:
       - pdf2zh
       - --gui
       - --config-file
-      - /config/pdf2zh_next.openai.toml
+      - ${PDF2ZH_NEXT_CONFIG_FILE:-/config/pdf2zh_next.openai.toml}
     stdin_open: true
     tty: true
     restart: unless-stopped
 
-    # If you prefer GitHub Container Registry instead of Docker Hub, replace the image with:
-    # ghcr.io/PDFMathTranslate/PDFMathTranslate-next:latest
+    # To switch image source or config profile, prefer changing `.env` instead of adding more compose files.
+    # Example:
+    #   PDF2ZH_NEXT_IMAGE=ghcr.io/PDFMathTranslate/PDFMathTranslate-next:latest
+    #   PDF2ZH_NEXT_CONFIG_FILE=/config/pdf2zh_next.ollama.toml
     #
-    # Later, when you switch to the Ollama comparison path, either:
-    # 1. change /config/pdf2zh_next.openai.toml to /config/pdf2zh_next.ollama.toml
-    # 2. and if needed on Linux, add:
+    # If needed on Linux, add:
     # extra_hosts:
     #   - "host.docker.internal:host-gateway"

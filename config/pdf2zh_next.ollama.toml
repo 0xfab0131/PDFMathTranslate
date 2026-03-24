@@ -4,6 +4,7 @@
 
 report_interval = 0.1
 ollama = true
+term_openai = true
 
 [basic]
 gui = true
@@ -22,14 +23,17 @@ ui_lang = "ja"
 lang_in = "en"
 lang_out = "ja"
 output = "/app/pdf2zh_files"
-qps = 1
+qps = 10
 ignore_cache = false
 min_text_length = 5
+custom_system_prompt = '''You are a professional Japanese translator for mathematical and scientific papers. Translate only natural-language content into Japanese. Preserve formulas, symbols, placeholders, tags, code identifiers, citation markers, equation references, numbering, and inline notation exactly as they appear. Do not add explanations, comments, apologies, or omitted content. Do not simplify, normalize, or reinterpret mathematical claims. Maintain formal academic Japanese and preserve the logical force of definitions, assumptions, lemmas, theorems, proofs, remarks, corollaries, captions, and references. When uncertain about a token, prefer preserving the original token exactly rather than guessing.'''
 save_auto_extracted_glossary = true
 no_auto_extract_glossary = false
-pool_max_workers = 1
-term_qps = 1
-term_pool_max_workers = 1
+pool_max_workers = 10
+term_qps = 2
+term_pool_max_workers = 2
+# Optional typography override only if Japanese body text looks visually inconsistent:
+# primary_font_family = "serif"
 
 [pdf]
 no_dual = false
@@ -42,18 +46,21 @@ skip_clean = false
 dual_translate_first = false
 disable_rich_text_translate = false
 enhance_compatibility = false
-use_alternating_pages_dual = false
-watermark_output_mode = "watermarked"
+# Match the OpenAI benchmark layout style when comparing outputs.
+use_alternating_pages_dual = true
+# Prefer clean final artifacts by default; switch back in the GUI if you need visible provenance.
+watermark_output_mode = "no_watermark"
 translate_table_text = true
 skip_scanned_detection = false
 ocr_workaround = false
 auto_enable_ocr_workaround = false
 only_include_translated_page = false
 no_merge_alternating_line_numbers = false
-no_remove_non_formula_lines = false
+no_remove_non_formula_lines = true
 non_formula_line_iou_threshold = 0.9
 figure_table_protection_threshold = 0.9
 skip_formula_offset_calculation = false
+max_pages_per_part = 50
 
 [ollama_detail]
 # Replace host and model before use.
@@ -62,3 +69,14 @@ skip_formula_offset_calculation = false
 ollama_model = "gemma2"
 ollama_host = "http://host.docker.internal:11434"
 num_predict = 2000
+
+[term_openai_detail]
+# Keep the main body translation on Ollama, but offload automatic term extraction to OpenAI.
+# Provide the secret via `.env`, e.g.:
+#   PDF2ZH_TERM_OPENAI_API_KEY=...
+term_openai_model = "gpt-4.1-mini"
+term_openai_base_url = "https://api.openai.com/v1"
+term_openai_timeout = "600"
+term_openai_temperature = "0.0"
+term_openai_enable_json_mode = false
+term_openai_send_temprature = true

@@ -33,7 +33,6 @@
 >
 > そして後で `Ollama` を評価する場合は、
 >
-> - `docker-compose.ollama.yml`
 > - `config/pdf2zh_next.ollama.toml`
 >
 > を使うのが現在の推奨です。
@@ -1257,6 +1256,35 @@ stable root docs 自体が、
 
 ただし、いきなり全文を流さず、まず first page で検証します。
 
+### 20.1.1 用途別の扱い方
+
+ここまでの調査を踏まえると、GUI-only の現実的な構造は
+
+- **1つの本流設定ファイル**
+- **1つの compose**
+- **必要なときだけ GUI または main TOML の値を調整**
+
+です。
+
+つまり、用途別に compose を増やして切り替えるより、
+
+- 通常は `config/pdf2zh_next.openai.toml`
+- 例外時に、その中の relevant なノブを調整
+- `Ollama` 比較だけは `config/pdf2zh_next.ollama.toml` に切り替える
+
+という方が、構造として自然です。
+
+用途ごとの分岐は次のように考えれば十分です。
+
+| 用途 | 基本ファイル | 実際の調整点 |
+| --- | --- | --- |
+| 本命の高精度数学論文 | `config/pdf2zh_next.openai.toml` | そのまま first-page 検証から開始 |
+| 互換性救済 | `config/pdf2zh_next.openai.toml` | `enhance_compatibility=true`、必要なら `skip_clean=true`、`disable_rich_text_translate=true` |
+| 長大論文安定化 | `config/pdf2zh_next.openai.toml` | `max_pages_per_part = 50` を加える |
+| スキャン PDF 救済 | `config/pdf2zh_next.openai.toml` | `auto_enable_ocr_workaround = true`、必要に応じて `translate_table_text = false` |
+| 高スループット試行 | `config/pdf2zh_next.openai.toml` | `qps` / `pool_max_workers` / `term_qps` / `term_pool_max_workers` を引き上げる |
+| 後段の local LLM 比較 | `config/pdf2zh_next.ollama.toml` | `.env` の `PDF2ZH_NEXT_CONFIG_FILE` を切り替える |
+
 ### 20.2 GUI を開いたら最初に見る場所
 
 次を上から順に確認します。
@@ -1437,7 +1465,7 @@ stable root docs 自体が、
 4. first-page で formula / layout / glossary extraction を検証する
 5. その設定のまま全文へ上げる
 6. その後、必要に応じて compatibility knobs を個別に調整する
-7. 最後に `docker-compose.ollama.yml` + `config/pdf2zh_next.ollama.toml` で比較する
+7. 最後に `.env` の `PDF2ZH_NEXT_CONFIG_FILE` を `config/pdf2zh_next.ollama.toml` へ切り替えて比較する
 
 この順序は地味ですが、  
 今回のような「どこが悪いのか分からないまま複雑な経路に入る」状態を避けるうえで、本質的に強いです。

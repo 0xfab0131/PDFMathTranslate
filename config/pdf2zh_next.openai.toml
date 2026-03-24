@@ -4,9 +4,22 @@
 # 2. Use OpenAI as the translator.
 # 3. Validate on the first page.
 # 4. Keep the final production path on this configuration unless you later compare with Ollama.
+#
+# Operational philosophy:
+# - Keep one main config file.
+# - Change values in the GUI when the knob is already exposed there.
+# - Only edit this file when you want to change the default behavior for repeated runs.
+#
+# Practical adjustment guide:
+# - If the PDF reader output looks broken: try enhance_compatibility=true
+# - If layout still breaks: also try skip_clean=true and disable_rich_text_translate=true
+# - Very large papers are split at 50 pages per part with shared context carried across parts
+# - If the document is scan-like: set auto_enable_ocr_workaround=true
+# - If throughput matters after quality is confirmed: raise qps/pool_max_workers carefully
 
 report_interval = 0.1
 openai = true
+term_openai = true
 
 [basic]
 gui = true
@@ -25,14 +38,25 @@ ui_lang = "ja"
 lang_in = "en"
 lang_out = "ja"
 output = "/app/pdf2zh_files"
-qps = 4
+qps = 10
 ignore_cache = false
 min_text_length = 5
+custom_system_prompt = '''You are a professional Japanese translator for mathematical and scientific papers. Translate only natural-language content into Japanese. Preserve formulas, symbols, placeholders, tags, code identifiers, citation markers, equation references, numbering, and inline notation exactly as they appear. Do not add explanations, comments, apologies, or omitted content. Do not simplify, normalize, or reinterpret mathematical claims. Maintain formal academic Japanese and preserve the logical force of definitions, assumptions, lemmas, theorems, proofs, remarks, corollaries, captions, and references. When uncertain about a token, prefer preserving the original token exactly rather than guessing.'''
 save_auto_extracted_glossary = true
 no_auto_extract_glossary = false
-pool_max_workers = 4
+pool_max_workers = 10
 term_qps = 2
 term_pool_max_workers = 2
+# Optional after manual review:
+# glossaries = "/config/glossaries/category-topos-alggeo-ja.example.csv"
+# Optional typography override only if Japanese body text looks visually inconsistent:
+# primary_font_family = "serif"
+
+# Higher-throughput example after quality is already validated:
+# qps = 10
+# pool_max_workers = 10
+# term_qps = 4
+# term_pool_max_workers = 4
 
 [pdf]
 no_dual = false
@@ -45,18 +69,35 @@ skip_clean = false
 dual_translate_first = false
 disable_rich_text_translate = false
 enhance_compatibility = false
-use_alternating_pages_dual = false
-watermark_output_mode = "watermarked"
+# For math-heavy dual output, alternating pages preserve page-scale readability better than same-page side-by-side.
+use_alternating_pages_dual = true
+# Prefer clean final artifacts by default; switch back in the GUI if you need visible provenance.
+watermark_output_mode = "no_watermark"
 translate_table_text = true
 skip_scanned_detection = false
 ocr_workaround = false
+# auto_enable_ocr_workaround: if ocr contained try-first this
 auto_enable_ocr_workaround = false
 only_include_translated_page = false
 no_merge_alternating_line_numbers = false
-no_remove_non_formula_lines = false
+no_remove_non_formula_lines = true
 non_formula_line_iou_threshold = 0.9
 figure_table_protection_threshold = 0.9
 skip_formula_offset_calculation = false
+
+# Compatibility rescue example:
+# skip_clean = true
+# dual_translate_first = true
+# disable_rich_text_translate = true
+# enhance_compatibility = true
+# translate_table_text = false
+#
+# Long-document stability default:
+max_pages_per_part = 50
+#
+# Scan-like PDF rescue example:
+# auto_enable_ocr_workaround = true
+# translate_table_text = false
 
 [openai_detail]
 # The API key is intentionally NOT stored in this tracked file.
@@ -79,3 +120,17 @@ openai_timeout = "500"
 openai_temperature = "0.0"
 openai_enable_json_mode = true
 openai_send_temprature = true
+# Optional only after baseline validation and only if your chosen model supports it:
+# openai_reasoning_effort = "medium"
+# openai_send_reasoning_effort = true
+
+[term_openai_detail]
+# Dedicated term-extraction engine.
+# Keep secrets out of Git and provide them via `.env`, e.g.:
+#   PDF2ZH_TERM_OPENAI_API_KEY=...
+term_openai_model = "gpt-4.1-mini"
+term_openai_base_url = "https://api.openai.com/v1"
+term_openai_timeout = "600"
+term_openai_temperature = "0.0"
+term_openai_enable_json_mode = false
+term_openai_send_temprature = true
