@@ -98,7 +98,7 @@ only_include_translated_page = false
 no_merge_alternating_line_numbers = false
 no_remove_non_formula_lines = true
 non_formula_line_iou_threshold = 0.9
-figure_table_protection_threshold = 0.95
+figure_table_protection_threshold = 0.9
 skip_formula_offset_calculation = false
 max_pages_per_part = 50
 
